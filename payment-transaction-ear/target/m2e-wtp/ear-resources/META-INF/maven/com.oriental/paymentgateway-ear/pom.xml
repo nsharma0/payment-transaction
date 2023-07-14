@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.oriental</groupId>
+		<artifactId>paymentgateway</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>paymentgateway-ear</artifactId>
+	<packaging>ear</packaging>
+	<name>PaymentGateway EAR</name>
+	<developers>
+    	<developer>
+    		<name>SVeeramalla</name>
+    		<organization>Oriental Trading Company</organization>
+    	</developer>
+    </developers>
+	<dependencies>
+		<dependency>
+			<groupId>com.oriental</groupId>
+			<artifactId>paymentgateway-webmvc</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+					<defaultLibBundleDir>APP-INF/lib</defaultLibBundleDir>
+					<displayName>PAYMENTGATEWAY Web Application</displayName>
+					<!-- <skinnyWars>true</skinnyWars> -->
+					<version>5</version>
+					<modules>
+						<webModule>
+							<groupId>com.oriental</groupId>
+							<artifactId>paymentgateway-webmvc</artifactId>
+							<contextRoot>/12c-payment</contextRoot>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
