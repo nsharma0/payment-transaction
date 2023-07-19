@@ -1,4 +1,4 @@
-package com.oriental.paymentgatewaypayload.dto.web;
+package com.oriental.paymenttransaction.dto.web;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

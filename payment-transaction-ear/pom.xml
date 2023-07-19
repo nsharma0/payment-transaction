@@ -42,7 +42,7 @@
 						<webModule>
 							<groupId>com.oriental</groupId>
 							<artifactId>payment-transaction-webmvc</artifactId>
-							<contextRoot>/12c-payment</contextRoot>
+							<contextRoot>/12c-paymenttransaction</contextRoot>
 						</webModule>
 					</modules>
 				</configuration>
