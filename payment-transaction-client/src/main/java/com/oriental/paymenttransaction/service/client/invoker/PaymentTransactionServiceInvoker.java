@@ -1,5 +1,8 @@
 package com.oriental.paymenttransaction.service.client.invoker;
 
+import java.util.List;
+
+import com.oriental.paymenttransaction.dto.web.TransactionDetailRequestDTO;
 import com.oriental.paymenttransaction.dto.web.TransactionHistoryRequestDTO;
 import com.oriental.paymenttransaction.dto.web.TransactionHistoryResponse;
 
@@ -11,5 +14,11 @@ import com.oriental.paymenttransaction.dto.web.TransactionHistoryResponse;
 public interface PaymentTransactionServiceInvoker {
 	
 	public TransactionHistoryResponse getTransactionHistory(TransactionHistoryRequestDTO requestDTO);
+	
+	public TransactionHistoryResponse getTransactionDetails(TransactionDetailRequestDTO requestDTO);
+	
+	public List<Long> searchCustomerByCC(String queryBy);
+	
+	public TransactionHistoryResponse findPGAuditInfoByOrderNbr(TransactionDetailRequestDTO requestDTO);
 	
 }

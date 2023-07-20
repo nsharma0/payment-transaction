@@ -1,6 +1,7 @@
 package com.oriental.paymenttransaction.service.client.invoker.impl;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oriental.paymenttransaction.business.constants.URLMappingConstants;
+import com.oriental.paymenttransaction.dto.web.TransactionDetailRequestDTO;
 import com.oriental.paymenttransaction.dto.web.TransactionHistoryRequestDTO;
 import com.oriental.paymenttransaction.dto.web.TransactionHistoryResponse;
 import com.oriental.paymenttransaction.service.client.exception.PaymentTransactionServiceException;
@@ -92,6 +95,116 @@ public class PaymentTransactionServiceInvokerImpl implements PaymentTransactionS
 					+ requestDTO.getCustomerNumber(),e);
 			throw new PaymentTransactionServiceException("IOException in /paymenttransaction/searchTransactionHistory customerNbr["
 					+ requestDTO.getCustomerNumber() + "] and Error" + "[{" + e + "}]");
+		}
+	}
+
+	@Override
+	public TransactionHistoryResponse getTransactionDetails(TransactionDetailRequestDTO requestDTO) {
+		String url = getEndpointurl() + URLMappingConstants.GET_TRANSACTION_DETAILS;
+		logger.info("url [{}] jsonRequest [{}]", url);
+		try {
+			HttpEntity<TransactionDetailRequestDTO> entity = new HttpEntity<TransactionDetailRequestDTO>(requestDTO);
+			long startTime = System.currentTimeMillis();
+			RestTemplate client = new RestTemplate();
+			String response = client.postForObject(url, entity, String.class);
+			logger.info("Execution took " + (System.currentTimeMillis() - startTime) + " ms");
+			String jsonReply = getJsonReply(response);
+			TransactionHistoryResponse responseDTO = null;
+			responseDTO = objectMapper.readValue(jsonReply, TransactionHistoryResponse.class);
+			return responseDTO;
+		} catch (JsonGenerationException e) {
+			logger.error("JsonGenerationException in /paymenttransaction/getTransactionDetails orderNbr=[{}] Error=[{}]",
+					requestDTO.getOrderNumber(), e);
+			throw new PaymentTransactionServiceException("JsonGenerationException in /paymenttransaction/getTransactionDetails orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
+		} catch (JsonMappingException e) {
+			logger.error("JsonMappingException in /paymenttransaction/getTransactionDetails orderNbr=[{}] Error=[{}]"
+					+ requestDTO.getOrderNumber(), e);
+			throw new PaymentTransactionServiceException("JsonMappingException in /paymenttransaction/getTransactionDetails orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
+		} catch (IOException e) {
+			logger.error("IOException in /paymenttransaction/getTransactionDetails orderNbr=[{}] Error=[{}]"
+					+ requestDTO.getOrderNumber(), e);
+			throw new PaymentTransactionServiceException("IOException in /paymenttransaction/getTransactionDetails orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
+		} catch (Exception e) {
+			logger.error("Exception in /paymenttransaction/getTransactionDetails orderNbr=[{}] Error=[{}]"
+					+ requestDTO.getOrderNumber(),e);
+			throw new PaymentTransactionServiceException("IOException in /paymenttransaction/getTransactionDetails orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
+		}
+	}
+
+	@Override
+	public List<Long> searchCustomerByCC(String queryBy) {
+		String url = getEndpointurl() + URLMappingConstants.SEARCH_CUSTOMER_BY_CC;
+		logger.info("url [{}] jsonRequest [{}]", url);
+		List<Long> customerNumber = null;
+		try {
+			long startTime = System.currentTimeMillis();
+			RestTemplate client = new RestTemplate();
+			String response = client.getForObject(url.toString()+"?queryBy="+queryBy,String.class);
+			logger.info("Execution took " + (System.currentTimeMillis() - startTime) + " ms");
+			String jsonReply = getJsonReply(response);
+			customerNumber = objectMapper.readValue(jsonReply, new TypeReference<List<Long>>(){});
+			return customerNumber;
+		} catch (JsonGenerationException e) {
+			logger.error("JsonGenerationException in /paymenttransaction/searchCustomerByCC query=[{}] Error=[{}]",
+					queryBy, e);
+			throw new PaymentTransactionServiceException("JsonGenerationException in /paymenttransaction/searchCustomerByCC query["
+					+ queryBy + "] and Error" + "[{" + e + "}]");
+		} catch (JsonMappingException e) {
+			logger.error("JsonMappingException in /paymenttransaction/searchCustomerByCC query=[{}] Error=[{}]"
+					+ queryBy, e);
+			throw new PaymentTransactionServiceException("JsonMappingException in /paymenttransaction/searchCustomerByCC query["
+					+ queryBy + "] and Error" + "[{" + e + "}]");
+		} catch (IOException e) {
+			logger.error("IOException in /paymenttransaction/searchCustomerByCC query=[{}] Error=[{}]"
+					+ queryBy, e);
+			throw new PaymentTransactionServiceException("IOException in /paymenttransaction/searchCustomerByCC query["
+					+ queryBy + "] and Error" + "[{" + e + "}]");
+		} catch (Exception e) {
+			logger.error("Exception in /paymenttransaction/searchCustomerByCC query=[{}] Error=[{}]"
+					+ queryBy,e);
+			throw new PaymentTransactionServiceException("IOException in /paymenttransaction/searchCustomerByCC query["
+					+ queryBy + "] and Error" + "[{" + e + "}]");
+		}
+	}
+
+	@Override
+	public TransactionHistoryResponse findPGAuditInfoByOrderNbr(TransactionDetailRequestDTO requestDTO) {
+		String url = getEndpointurl() + URLMappingConstants.FIND_PG_AUDIT_INFO_BY_ORDNBR;
+		logger.info("url [{}] jsonRequest [{}]", url);
+		try {
+			HttpEntity<TransactionDetailRequestDTO> entity = new HttpEntity<TransactionDetailRequestDTO>(requestDTO);
+			long startTime = System.currentTimeMillis();
+			RestTemplate client = new RestTemplate();
+			String response = client.postForObject(url, entity, String.class);
+			logger.info("Execution took " + (System.currentTimeMillis() - startTime) + " ms");
+			String jsonReply = getJsonReply(response);
+			TransactionHistoryResponse responseDTO = null;
+			responseDTO = objectMapper.readValue(jsonReply, TransactionHistoryResponse.class);
+			return responseDTO;
+		} catch (JsonGenerationException e) {
+			logger.error("JsonGenerationException in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr=[{}] Error=[{}]",
+					requestDTO.getOrderNumber(), e);
+			throw new PaymentTransactionServiceException("JsonGenerationException in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
+		} catch (JsonMappingException e) {
+			logger.error("JsonMappingException in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr=[{}] Error=[{}]"
+					+ requestDTO.getOrderNumber(), e);
+			throw new PaymentTransactionServiceException("JsonMappingException in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
+		} catch (IOException e) {
+			logger.error("IOException in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr=[{}] Error=[{}]"
+					+ requestDTO.getOrderNumber(), e);
+			throw new PaymentTransactionServiceException("IOException in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
+		} catch (Exception e) {
+			logger.error("Exception in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr=[{}] Error=[{}]"
+					+ requestDTO.getOrderNumber(),e);
+			throw new PaymentTransactionServiceException("IOException in /paymenttransaction/findPGAuditInfoByOrderNbr orderNbr["
+					+ requestDTO.getOrderNumber() + "] and Error" + "[{" + e + "}]");
 		}
 	}
  

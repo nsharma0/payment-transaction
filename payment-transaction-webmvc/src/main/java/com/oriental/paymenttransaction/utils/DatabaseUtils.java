@@ -200,14 +200,6 @@ public class DatabaseUtils {
 		return customerNums;
 	}
 
-	public boolean validateAlreadyUsedCheck(String batchNumber, String checkNumber) {
-
-        logger.info("> In DatabaseUtils.validateAlreadyUsedCheck()");
-        boolean result = paymentService.validateAlreadyUsedCheck(batchNumber, checkNumber);
-        logger.info("< Leaving DatabaseUtils.validateAlreadyUsedCheck()");
-		
-		return result;
-	}
 	/**
 	 * Author : nbhutani
 	 * @param requestDTO
