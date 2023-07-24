@@ -13,6 +13,8 @@ import com.oriental.paymenttransaction.dto.web.TransactionHistoryResponse;
 
 public interface PaymentTransactionServiceInvoker {
 	
+	public void setEndpointurl(String endpointurl);
+	
 	public TransactionHistoryResponse getTransactionHistory(TransactionHistoryRequestDTO requestDTO);
 	
 	public TransactionHistoryResponse getTransactionDetails(TransactionDetailRequestDTO requestDTO);
